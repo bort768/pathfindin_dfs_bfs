@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace pathfindin_dfs_bfs
 {
     public class Obliczenia
     {
+        public static List<Check_node> checked_node = new List<Check_node>();
+        public static bool search_end;
+        private static bool w_gore;
+
         public static int Give_Random_Number(int x, int y)
         {
             Random rnd = new();
@@ -50,12 +55,60 @@ namespace pathfindin_dfs_bfs
                     {
                         grid[i, j] = 1;
                     }
-                    else if (i == end_node[0] && j == end_node[1])
+                    if (i == end_node[0] && j == end_node[1])
                     {
                         grid[i, j] = 4;
                     }
 
-                    Console.Write(grid[i, j]);
+                    if (Program.visted_node[i, j] == true && i == end_node[0] && j == end_node[1])
+                    {
+                        grid[i, j] = 5;
+                        search_end = true;
+                    }
+                    else if (Program.arrival_node[i, j] && grid[i, j] != 1)
+                    {
+                        grid[i, j] = 3;
+
+                    }
+                    else if(Program.visted_node[i, j] == true && grid[i, j] != 1 && grid[i, j] != 3 && !Program.arrival_node[i, j])
+                    {
+                        grid[i, j] = 2;
+                    }
+
+                    #region COLOR
+                    if (grid[i, j] == 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(grid[i, j]);
+                        Console.ResetColor();
+                    }
+                    else if (grid[i, j] == 5)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write(grid[i, j]);
+                        Console.ResetColor();
+                    }
+                    else if (grid[i, j] == 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write(grid[i, j]);
+                        Console.ResetColor();
+                    }
+                    else if (grid[i, j] == 4)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write(grid[i, j]);
+                        Console.ResetColor();
+                    }
+                    else if (grid[i, j] == 1)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write(grid[i, j]);
+                        Console.ResetColor();
+                    }
+                    else
+                        Console.Write(grid[i, j]);
+                    #endregion
 
                 }
                 Console.WriteLine();
@@ -63,56 +116,125 @@ namespace pathfindin_dfs_bfs
         }//write out
 
         /// <summary>
-        /// metoda ma zwracac liste int'ow. Jesli to możliwe w wszytkich kierunkach
+        /// metoda ma zwracac liste klas Check node. Jesli to możliwe w wszytkich kierunkach
         /// </summary>
         /// <param name="row"> ilosc rzedów</param>
         /// <param name="col"> ilosc kolumn</param>
         /// <param name="pos"> pozycja</param>
         /// <returns></returns>
-        public static int[] check_node(int row, int col, int[] pos)
+        public static List<Check_node> check_node(int row, int col, int[] pos)
         {
-            int[] check_node_list = new int[8];
+            //int[] check_node_list = new int[8];
             int i = pos[0];
             int j = pos[1];
+            
+            
 
-            if (i < row)
+            //Console.WriteLine(i+" "+ j); // debug
+
+            if (i < row-1) // dół
             {
-                
-                check_node_list[0] = i+1;
-                check_node_list[1] = j;
+                checked_node.Add(new Check_node { Row = i+1, Col = j, Visted_node = true, Direction = Helper_driectrion.DOWN });
+                Console.WriteLine();
             }
-            if (i > 1)
+            if (i > 0) // góra
             {
-                
-                check_node_list[2] = i-1;
-                check_node_list[3] = j;
+                checked_node.Add(new Check_node { Row = i - 1, Col = j, Visted_node = true, Direction = Helper_driectrion.UP });
             }
-            if (j < col)
+            if (j < col-1 ) // w prawo
             {
-                check_node_list[4] = i;
-                check_node_list[5] = j+1;
+                checked_node.Add(new Check_node { Row = i, Col = j +1, Visted_node = true, Direction = Helper_driectrion.RIGHT });
             }
-            if (j > 1)
+            if (j > 0) // w lewo
             {
-                check_node_list[6] = i;
-                check_node_list[7] = j-1;
+                checked_node.Add(new Check_node { Row = i, Col = j-1, Visted_node = true, Direction = Helper_driectrion.LEFT });
             }
-            return check_node_list;
+
+            return checked_node;
         }// check_node
 
         public static void DFS(int[,] grid, int row, int col,
-            bool[,] visited_node, int[] start_node, int[] end_node)
+             int[] start_node, int[] end_node)
         {
-            int[] pos = { start_node[0], start_node[1] };
-
-            int[] lists = check_node(row, col, pos);
-
-            for (int i = 0; i < lists.Length/2; i++)
+            List<Check_node> list_cheked_node;
+            list_cheked_node = check_node(row, col, start_node);
+            int[] pos = new int[] { start_node[0], start_node[1] };
+            while (!search_end)
             {
-                Console.WriteLine(lists[i]+","+lists[i+1]); 
-            }
-                //Thread.Sleep(30);
 
+                // w góre
+                if (pos[0] > 0 && grid[pos[0] - 1, pos[1]] != 3 && grid[pos[0] - 1, pos[1]] != 1)
+                {
+                    if (Program.visted_node[pos[0] - 1, pos[1]])
+                    {
+                        pos[0]--;
+                        list_cheked_node = check_node(row, col, pos);
+                        Program.arrival_node[pos[0], pos[1]] = true;
+                    }
+                }
+                // w lewo
+                else if (pos[1] > 0 && grid[pos[0], pos[1] - 1] != 3 && grid[pos[0], pos[1] - 1] != 1)
+                {
+                    if (Program.visted_node[pos[0], pos[1] - 1])
+                    {
+                        pos[1]--;
+                        list_cheked_node = check_node(row, col, pos);
+                        Program.arrival_node[pos[0], pos[1]] = true;
+                    }
+                }
+                // w dół 
+                else if (pos[0] < row-1 && grid[pos[0] + 1, pos[1]] != 3 && grid[pos[0] + 1, pos[1]] != 1)
+                {
+                    if (Program.visted_node[pos[0] + 1, pos[1]] )
+                    {
+                        pos[0]++;
+                        list_cheked_node = check_node(row, col, pos);
+                        Program.arrival_node[pos[0], pos[1]] = true;
+                        
+                    }
+                }
+                // w prawo
+                else if (pos[1] < col && grid[pos[0], pos[1] + 1] != 3 && grid[pos[0], pos[1] + 1] != 1)
+                {
+                    if (Program.visted_node[pos[0], pos[1]+ 1] )
+                    {
+                        pos[1]++;
+                        list_cheked_node = check_node(row, col, pos);
+                        Program.arrival_node[pos[0], pos[1]] = true;
+                        
+                    }
+                }
+                
+                foreach (var node in list_cheked_node)
+                {
+                    // row        // col
+                    if (node.Row == end_node[0] && node.Col == end_node[1])
+                    {
+                        Console.WriteLine(node.Row + "," + node.Col + " Cel jest w tej pozycji ");
+                    }
+                    else 
+                    {
+                        //Console.WriteLine(node.Row + "," + node.Col + " Cel? " + node.Direction);
+                    }
+
+                    if (grid[node.Row, node.Col] != 3)
+                    {
+                        Program.visted_node[node.Row, node.Col] = node.Visted_node;
+                    }
+
+                                       
+                }
+
+                
+
+
+
+                Thread.Sleep(500);
+
+                Console.WriteLine();
+                write_out(grid, row, col, start_node, end_node);
+            }
+            
         }
 
     }//class
