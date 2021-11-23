@@ -11,7 +11,9 @@ namespace pathfindin_dfs_bfs
     {
         public static List<Check_node> checked_node = new List<Check_node>();
         public static bool search_end;
-        private static bool w_gore;
+        //private static bool w_gore;
+        private static bool wypisane;
+        private static bool iamstuck;
 
         public static int Give_Random_Number(int x, int y)
         {
@@ -51,6 +53,7 @@ namespace pathfindin_dfs_bfs
             {
                 for (int j = 0; j < col ; j++)
                 {
+                    
                     if (i == start_node[0] && j == start_node[1])
                     {
                         grid[i, j] = 1;
@@ -60,7 +63,12 @@ namespace pathfindin_dfs_bfs
                         grid[i, j] = 4;
                     }
 
-                    if (Program.visted_node[i, j] == true && i == end_node[0] && j == end_node[1])
+                    if (grid[i, j] == 6)
+                    {
+                        
+                    }
+
+                    else if (Program.visted_node[i, j] == true && i == end_node[0] && j == end_node[1])
                     {
                         grid[i, j] = 5;
                         search_end = true;
@@ -76,7 +84,13 @@ namespace pathfindin_dfs_bfs
                     }
 
                     #region COLOR
-                    if (grid[i, j] == 2)
+                    if (grid[i, j] == 6)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write(grid[i, j]);
+                        Console.ResetColor();
+                    }
+                    else if (grid[i, j] == 2)
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write(grid[i, j]);
@@ -106,6 +120,7 @@ namespace pathfindin_dfs_bfs
                         Console.Write(grid[i, j]);
                         Console.ResetColor();
                     }
+
                     else
                         Console.Write(grid[i, j]);
                     #endregion
@@ -159,7 +174,7 @@ namespace pathfindin_dfs_bfs
             List<Check_node> list_cheked_node;
             list_cheked_node = check_node(row, col, start_node);
             int[] pos = new int[] { start_node[0], start_node[1] };
-            while (!search_end)
+            while (!search_end && !wypisane)
             {
 
                 // w góre
@@ -204,17 +219,102 @@ namespace pathfindin_dfs_bfs
                         
                     }
                 }
+                else if (iamstuck)
+                {
+                    foreach (var item in list_cheked_node)
+                    {
+                        if (Program.visted_node[item.Row, item.Col] == true && grid[item.Row,item.Col] != 3 && grid[item.Row, item.Col] != 1)
+                        {
+                            pos[0] = item.Row;
+                            pos[1] = item.Col;
+                            iamstuck = false;
+                            list_cheked_node = check_node(row, col, pos);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    iamstuck = true;
+                }
+
                 
                 foreach (var node in list_cheked_node)
                 {
-                    // row        // col
-                    if (node.Row == end_node[0] && node.Col == end_node[1])
+                    //sprawdz czy node przeszukany jest zgodny z nodem docelowym
+                    if (node.Row == end_node[0] && node.Col == end_node[1]) // powinno być grid[node.Row, node.Col] == 4 // ale w/e
                     {
                         Console.WriteLine(node.Row + "," + node.Col + " Cel jest w tej pozycji ");
+
+                        //Console.WriteLine("Row " + (start_node[0] - node.Row));
+                        //Console.WriteLine("Col " + (start_node[1] - node.Col));
+                        Console.WriteLine($"Suma ruchów {Math.Abs(start_node[1] - node.Col)+ Math.Abs(start_node[0] - node.Row)}");
+
+                        int uwu = 0;
+
+                        #region wypisz sciezke
+                        for (int i = 0; i <= Math.Abs(start_node[0] - node.Row); i++)
+                        {
+                            for (int ii = 0; ii <= Math.Abs(start_node[1] - node.Col); ii++)
+                            {
+                                if (start_node[1] - node.Col > 0)
+                                {
+                                    grid[node.Row, node.Col + ii] = 6;
+                                }
+                                else if (start_node[1] - node.Col < 0)
+                                {
+                                    grid[node.Row, node.Col-ii] = 6;
+                                }
+                                else if (start_node[1] - node.Col == 0)
+                                {
+                                    grid[node.Row, node.Col] = 6;
+                                }
+                                uwu = ii;
+                            }
+
+                            if (start_node[1] - node.Col > 0)
+                            {
+                                if (start_node[0] - node.Row > 0)
+                                {
+                                    grid[node.Row + i, node.Col + uwu] = 6;
+                                }
+                                else if (start_node[0] - node.Row < 0)
+                                {
+                                    grid[node.Row - i, node.Col + uwu] = 6;
+                                }
+                                else if (start_node[0] - node.Col == 0)
+                                {
+                                    grid[node.Row, node.Col] = 6;
+                                }
+                            }
+                            else if (start_node[1] - node.Col < 0)
+                            {
+                                if (start_node[0] - node.Row > 0)
+                                {
+                                    grid[node.Row + i, node.Col - uwu] = 6;
+                                }
+                                else if (start_node[0] - node.Row < 0)
+                                {
+                                    grid[node.Row - i, node.Col - uwu] = 6;
+                                }
+                                else if (start_node[0] - node.Col == 0)
+                                {
+                                    grid[node.Row, node.Col] = 6;
+                                }
+
+                            }
+                            else if (start_node[0] - node.Col == 0)
+                                {
+                                    grid[node.Row, node.Col] = 6;
+                                }     
+                        }
+
+                        wypisane = true;
+                        #endregion
                     }
                     else 
                     {
-                        //Console.WriteLine(node.Row + "," + node.Col + " Cel? " + node.Direction);
+                        //Console.WriteLine(node.Row + "," + node.Col + " Cel? " + node.Direction); // debug
                     }
 
                     if (grid[node.Row, node.Col] != 3)
@@ -225,17 +325,12 @@ namespace pathfindin_dfs_bfs
                                        
                 }
 
-                
-
-
-
-                Thread.Sleep(500);
-
                 Console.WriteLine();
                 write_out(grid, row, col, start_node, end_node);
-            }
+                Thread.Sleep(500);
+            }// while
             
-        }
+        }//dfs
 
     }//class
 }
