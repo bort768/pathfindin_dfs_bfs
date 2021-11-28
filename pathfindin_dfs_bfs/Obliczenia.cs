@@ -69,7 +69,7 @@ namespace pathfindin_dfs_bfs
                             Node_South = new int[] { i + 1, j, Give_Koszt_Ruchu() } });
                     }
                     // dla rzedow w kolumnie 0
-                    if (j == 0 && i > 0)
+                    else if(j == 0 && i > 0)
                     {
                         koszt_Ruchu.Add(item: new Koszt_Ruchu
                         {
@@ -80,7 +80,7 @@ namespace pathfindin_dfs_bfs
                         });
                     }
                     // dla col w rzedzie 0
-                    if (j > 0 && i == 0)
+                    else if(j > 0 && i == 0)
                     {
                         koszt_Ruchu.Add(item: new Koszt_Ruchu
                         {
@@ -91,12 +91,12 @@ namespace pathfindin_dfs_bfs
                         });
                     }
                     // dla srodkowych pol
-                    if (j > 0 && i > 0 && i < row-1 && j < col-1)
+                    else if(j > 0 && i > 0 && i < row-1 && j < col-1)
                     {
                         koszt_Ruchu.Add(item: new Koszt_Ruchu
                         {
                             Node_1 = new int[] { i, j },
-                            Node_North = new int[] { koszt_Ruchu[count - col].Node_South[0], koszt_Ruchu[count - col].Node_South[1], koszt_Ruchu[count - col].Node_South[2] },
+                            Node_North = new int[] { koszt_Ruchu[count - col].Node_1[0], koszt_Ruchu[count - col].Node_1[1], koszt_Ruchu[count - col].Node_South[2] },
                             Node_East = new int[] { i, j + 1, Give_Koszt_Ruchu() },
                             Node_South = new int[] { i + 1, j, Give_Koszt_Ruchu() },
                             Node_West = new int[] { koszt_Ruchu[count - 1].Node_1[0], koszt_Ruchu[count - 1].Node_1[1], koszt_Ruchu[count - 1].Node_South[2] }
@@ -104,7 +104,7 @@ namespace pathfindin_dfs_bfs
                         });
                     }
                     // dla prawy gorny rog
-                    if (i == 0 && j == col - 1)
+                    else if(i == 0 && j == col - 1)
                     {
                         koszt_Ruchu.Add(item: new Koszt_Ruchu
                         {
@@ -114,8 +114,8 @@ namespace pathfindin_dfs_bfs
 
                         });
                     }
-                    // dla konca kolumny srodkowy przedzial 
-                    if ( i > 0 && i < row - 1 && j == col - 1)
+                     // dla konca kolumny srodkowy przedzial 
+                    else if ( i > 0 && i < row - 1 && j == col - 1)
                     {
                         koszt_Ruchu.Add(item: new Koszt_Ruchu
                         {
@@ -127,32 +127,34 @@ namespace pathfindin_dfs_bfs
                         });
                     }
                     //lewy dolny rog
-                    if (j == 0 && i == row-1)
+                    else if(j == 0 && i == row-1)
                     {
                         koszt_Ruchu.Add(item: new Koszt_Ruchu
                         {
                             Node_1 = new int[] { i, j },
                             Node_North = new int[] { koszt_Ruchu[count - col].Node_1[0], koszt_Ruchu[count - col].Node_1[1], koszt_Ruchu[count - col].Node_South[2] },
-                            Node_East = new int[] { i + 1, j, Give_Koszt_Ruchu() },
+                            Node_East = new int[] { i , j + 1, Give_Koszt_Ruchu() },
                             //Node_West = new int[] { koszt_Ruchu[j - 1].Node_South[0], koszt_Ruchu[j - 1].Node_South[1], koszt_Ruchu[j - 1].Node_South[2] }
 
                         });
                     }
                     //dolna krawedz srodek
                     // problem null
-                    if (j > 0 && i == row - 1 && j < col-1)
+                    else if (j > 0 && i == row - 1 && j < col - 1)
                     {
+                        Console.WriteLine("row "+koszt_Ruchu[count - col].Node_1[0] +" col "+ koszt_Ruchu[count - col].Node_1[1] +" Kosz to " + koszt_Ruchu[count - col].Node_South[2]);
+                        Console.WriteLine("row "+ koszt_Ruchu[count - 1].Node_1[0] + " col "+ koszt_Ruchu[count - 1].Node_1[1] + " Kosz to " + koszt_Ruchu[count - 1].Node_East[2]);
                         koszt_Ruchu.Add(item: new Koszt_Ruchu
                         {
                             Node_1 = new int[] { i, j },
                             Node_North = new int[] { koszt_Ruchu[count - col].Node_1[0], koszt_Ruchu[count - col].Node_1[1], koszt_Ruchu[count - col].Node_South[2] },
-                            Node_East = new int[] { i + 1, j, Give_Koszt_Ruchu() },
+                            Node_East = new int[] { i, j + 1, Give_Koszt_Ruchu() },
                             Node_West = new int[] { koszt_Ruchu[count - 1].Node_1[0], koszt_Ruchu[count - 1].Node_1[1], koszt_Ruchu[count - 1].Node_East[2] }
 
                         });
                     }
                     // prawy dolny rog
-                    if (j == col-1 && i == row - 1)
+                    else if(j == col-1 && i == row - 1)
                     {
                         koszt_Ruchu.Add(item: new Koszt_Ruchu
                         {
@@ -164,6 +166,8 @@ namespace pathfindin_dfs_bfs
                         });
                         
                     }
+                        
+                    
                     count++;
                 }
                 
@@ -336,7 +340,7 @@ namespace pathfindin_dfs_bfs
                     }
                 }
                 // w prawo
-                else if (pos[1] < col && grid[pos[0], pos[1] + 1] != 3 && grid[pos[0], pos[1] + 1] != 1)
+                else if (pos[1] < col-1 && grid[pos[0], pos[1] + 1] != 3 && grid[pos[0], pos[1] + 1] != 1)
                 {
                     if (Program.visted_node[pos[0], pos[1]+ 1] )
                     {
@@ -471,5 +475,187 @@ namespace pathfindin_dfs_bfs
             
         }//dfs
 
+
+
+
+        public static void BFS(int[,] grid, int row, int col,
+            int[] start_node, int[] end_node)
+        {
+            List<Check_node> list_cheked_node;
+            list_cheked_node = check_node(row, col, start_node);
+            int[] pos = new int[] { start_node[0], start_node[1] };
+            while (!search_end && !wypisane)
+            {
+                // w prawo
+                 if (pos[1] < col-1 && grid[pos[0], pos[1] + 1] != 3 && grid[pos[0], pos[1] + 1] != 1)
+                {
+                    if (Program.visted_node[pos[0], pos[1] + 1])
+                    {
+                        pos[1]++;
+                        list_cheked_node = check_node(row, col, pos);
+                        Program.arrival_node[pos[0], pos[1]] = true;
+
+                    }
+                }
+                 // w lewo
+                else if (pos[1] > 0 && grid[pos[0], pos[1] - 1] != 3 && grid[pos[0], pos[1] - 1] != 1)
+                {
+                    if (Program.visted_node[pos[0], pos[1] - 1])
+                    {
+                        pos[1]--;
+                        list_cheked_node = check_node(row, col, pos);
+                        Program.arrival_node[pos[0], pos[1]] = true;
+                    }
+                }
+
+                // w góre
+                else if (pos[0] > 0 && grid[pos[0] - 1, pos[1]] != 3 && grid[pos[0] - 1, pos[1]] != 1)
+                {
+                    if (Program.visted_node[pos[0] - 1, pos[1]])
+                    {
+                        pos[0]--;
+                        list_cheked_node = check_node(row, col, pos);
+                        Program.arrival_node[pos[0], pos[1]] = true;
+                    }
+                } 
+               
+
+                
+                // w dół 
+                else if (pos[0] < row - 1 && grid[pos[0] + 1, pos[1]] != 3 && grid[pos[0] + 1, pos[1]] != 1)
+                {
+                    if (Program.visted_node[pos[0] + 1, pos[1]])
+                    {
+                        pos[0]++;
+                        list_cheked_node = check_node(row, col, pos);
+                        Program.arrival_node[pos[0], pos[1]] = true;
+
+                    }
+                }
+                
+                else if (iamstuck)
+                {
+                    foreach (var item in list_cheked_node)
+                    {
+                        if (Program.visted_node[item.Row, item.Col] == true && grid[item.Row, item.Col] != 3 && grid[item.Row, item.Col] != 1)
+                        {
+                            pos[0] = item.Row;
+                            pos[1] = item.Col;
+                            iamstuck = false;
+                            list_cheked_node = check_node(row, col, pos);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    iamstuck = true;
+                }
+
+
+                foreach (var node in list_cheked_node)
+                {
+                    //sprawdz czy node przeszukany jest zgodny z nodem docelowym
+                    if (node.Row == end_node[0] && node.Col == end_node[1]) // powinno być grid[node.Row, node.Col] == 4 // ale w/e
+                    {
+                        Console.WriteLine(node.Row + "," + node.Col + " Cel jest w tej pozycji ");
+
+                        //Console.WriteLine("Row " + (start_node[0] - node.Row));
+                        //Console.WriteLine("Col " + (start_node[1] - node.Col));
+                        Console.WriteLine($"Suma ruchów {Math.Abs(start_node[1] - node.Col) + Math.Abs(start_node[0] - node.Row)}");
+
+                        int uwu = 0;
+
+                        #region wypisz sciezke
+                        for (int i = 0; i <= Math.Abs(start_node[0] - node.Row); i++)
+                        {
+                            for (int ii = 0; ii <= Math.Abs(start_node[1] - node.Col); ii++)
+                            {
+                                if (start_node[1] - node.Col > 0)
+                                {
+                                    grid[node.Row, node.Col + ii] = 6;
+                                }
+                                else if (start_node[1] - node.Col < 0)
+                                {
+                                    grid[node.Row, node.Col - ii] = 6;
+                                }
+                                else if (start_node[1] - node.Col == 0)
+                                {
+                                    grid[node.Row, node.Col] = 6;
+                                }
+                                uwu = ii;
+                            }
+
+                            if (start_node[1] - node.Col > 0)
+                            {
+                                if (start_node[0] - node.Row > 0)
+                                {
+                                    grid[node.Row + i, node.Col + uwu] = 6;
+                                }
+                                else if (start_node[0] - node.Row < 0)
+                                {
+                                    grid[node.Row - i, node.Col + uwu] = 6;
+                                }
+                                else if (start_node[0] - node.Col == 0)
+                                {
+                                    grid[node.Row, node.Col] = 6;
+                                }
+                            }
+                            else if (start_node[1] - node.Col < 0)
+                            {
+                                if (start_node[0] - node.Row > 0)
+                                {
+                                    grid[node.Row + i, node.Col - uwu] = 6;
+                                }
+                                else if (start_node[0] - node.Row < 0)
+                                {
+                                    grid[node.Row - i, node.Col - uwu] = 6;
+                                }
+                                else if (start_node[0] - node.Col == 0)
+                                {
+                                    grid[node.Row, node.Col] = 6;
+                                }
+
+                            }
+                            else if (start_node[0] - node.Col == 0)
+                            {
+                                grid[node.Row, node.Col] = 6;
+                            }
+                        }
+
+                        wypisane = true;
+                        #endregion
+
+
+                        foreach (var item in koszt_Ruchu)
+                        {
+
+                            List<string> wypisz_kierunki = item.Daj_Liste_Z_Kosztami();
+                            foreach (var kierunek in wypisz_kierunki)
+                            {
+                                Console.WriteLine(kierunek);
+                            }
+                            Console.WriteLine("============================");
+                        }
+                    }
+                    else
+                    {
+                        //Console.WriteLine(node.Row + "," + node.Col + " Cel? " + node.Direction); // debug
+                    }
+
+                    if (grid[node.Row, node.Col] != 3)
+                    {
+                        Program.visted_node[node.Row, node.Col] = node.Visted_node;
+                    }
+
+
+                }
+
+                Console.WriteLine();
+                write_out(grid, row, col, start_node, end_node);
+                Thread.Sleep(500);
+            }// while
+
+        }//dfs
     }//class
 }
