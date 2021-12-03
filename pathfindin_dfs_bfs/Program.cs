@@ -34,13 +34,16 @@ namespace pathfindin_dfs_bfs
                 end_node = new int[] { Obliczenia.Give_Random_Number(0, row), Obliczenia.Give_Random_Number(0, col) };
                 //Console.WriteLine("WEW"); 
             }
-            while (start_node == end_node);
+            while (start_node[0] == end_node[0] && start_node[1] == end_node[1]);
 
             Obliczenia.write_out(grid, row, col, start_node, end_node);
 
-            //Obliczenia.DFS(grid, row, col, start_node, end_node);
-            Obliczenia.BFS(grid, row, col, start_node, end_node);
 
+
+            int[,] grid_bfs = grid;
+            //Obliczenia.DFS(grid, row, col, start_node, end_node);
+            //Obliczenia.BFS(grid_bfs, row, col, start_node, end_node);
+            //.IS(grid_bfs, row, col, start_node, end_node);
 
 
         }
