@@ -68,6 +68,7 @@ namespace pathfindin_dfs_bfs
 
                         Obliczenia.Wypisz_Najkrotsza_droge(grid, start_node, node);
                         wypisane = true;
+                        /*
                         foreach (var item in Obliczenia.koszt_Ruchu)
                         {
 
@@ -78,6 +79,7 @@ namespace pathfindin_dfs_bfs
                             }
                             Console.WriteLine("============================");
                         }
+                        */
                     }
                     else
                     {
@@ -93,7 +95,7 @@ namespace pathfindin_dfs_bfs
                 }
 
                 Console.WriteLine();
-                Obliczenia.write_out(grid, row, col, start_node, end_node);
+                Obliczenia.write_out_koszt(grid, row, col, start_node, end_node);
 
             }// while
 

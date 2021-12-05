@@ -101,6 +101,7 @@ namespace pathfindin_dfs_bfs
                         Console.WriteLine($"Suma ruchów {Math.Abs(start_node[1] - node.Col) + Math.Abs(start_node[0] - node.Row)}");
                         Obliczenia.Wypisz_Najkrotsza_droge(grid, start_node, node);
                         wypisane = true;
+                        /*
                         foreach (var item in Obliczenia.koszt_Ruchu)
                         {
 
@@ -111,6 +112,7 @@ namespace pathfindin_dfs_bfs
                             }
                             Console.WriteLine("============================");
                         }
+                        */
                     }
                     else
                     {

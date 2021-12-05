@@ -8,8 +8,8 @@ namespace pathfindin_dfs_bfs
     class Program
     {
         //rzedy i kolmny generowane losowo
-        static int row = Obliczenia.Give_Random_Number(6, 9);
-        static int col = Obliczenia.Give_Random_Number(6, 9);
+        static int row = Obliczenia.Give_Random_Number(3, 6);
+        static int col = Obliczenia.Give_Random_Number(3, 6);
         public static bool[,] visted_node = Obliczenia.Enter_false_visted(row, col);
         public static bool[,] arrival_node = Obliczenia.Enter_false_visted(row, col);
 
@@ -41,9 +41,9 @@ namespace pathfindin_dfs_bfs
 
 
             int[,] grid_bfs = grid;
-            //Obliczenia.DFS(grid, row, col, start_node, end_node);
-            //Obliczenia.BFS(grid_bfs, row, col, start_node, end_node);
-            //.IS(grid_bfs, row, col, start_node, end_node);
+            Szukanie_DFS.DFS(grid, row, col, start_node, end_node);
+            BFS.BFS_M(grid_bfs, row, col, start_node, end_node);
+            //Iteration_Search.IS(grid_bfs, row, col, start_node, end_node);
 
 
         }

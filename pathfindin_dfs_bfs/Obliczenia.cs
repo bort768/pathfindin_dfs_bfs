@@ -267,6 +267,210 @@ namespace pathfindin_dfs_bfs
             }
         }//write out
 
+
+        /// <summary>
+        /// wyswietlenie tablicy. Pamietaj o zakonczeniu skrytpu o ustaweniu search_end na false
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <param name="start_node"></param>
+        /// <param name="end_node"></param>
+        public static void write_out_koszt(int[,] grid, int row, int col, int[] start_node, int[] end_node)
+        {
+            int count = 0;
+            for (int i = 0; i < row; i++)
+            {
+                int kolumna_z_petli = 0;
+                for (int j = 0; j < col; j++)
+                {
+
+                    if (i == start_node[0] && j == start_node[1])
+                    {
+                        grid[i, j] = 1;
+                    }
+                    if (i == end_node[0] && j == end_node[1])
+                    {
+                        grid[i, j] = 4;
+                    }
+
+                    if (grid[i, j] == 6)
+                    {
+
+                    }
+
+                    else if (Program.visted_node[i, j] == true && i == end_node[0] && j == end_node[1])
+                    {
+                        grid[i, j] = 5;
+                        search_end = true;
+                    }
+                    else if (Program.arrival_node[i, j] && grid[i, j] != 1)
+                    {
+                        grid[i, j] = 3;
+
+                    }
+                    else if (Program.visted_node[i, j] == true && grid[i, j] != 1 && grid[i, j] != 3 && !Program.arrival_node[i, j])
+                    {
+                        grid[i, j] = 2;
+                    }
+
+                    if (j != col-1)
+                    {
+                        #region COLOR
+                        switch (grid[i, j])
+                        {
+                            case 6:
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 2:
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 5:
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 3:
+                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 4:
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 1:
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            default:
+                                //Console.Write(grid[i, j]);
+                                break;
+                        }
+                        #endregion
+                        Console.Write($"{grid[i, j]} ");
+                        Console.ResetColor();
+                        Console.Write($"<--{koszt_Ruchu[count].Node_East[2]}--> ");
+                    }
+                    
+                    if (j == col -1)
+                    {
+                        #region COLOR
+                        switch (grid[i, j])
+                        {
+                            case 6:
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 2:
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 5:
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 3:
+                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 4:
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 1:
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            default:
+                                //Console.Write(grid[i, j]);
+                                break;
+                        }
+                        #endregion
+                        Console.Write($"{grid[i, j]} ");
+                        Console.ResetColor();
+                    }
+                    count++;
+                    kolumna_z_petli = j;
+
+                }
+                Console.WriteLine();
+                if (i != row - 1)
+                {
+                    for (int ii = 0; ii < 5; ii++)
+                    {
+                        switch (ii)
+                        {
+                            case 0:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write("|         ");
+                                    }
+
+                                    break;
+                                }
+
+                            case 1:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write($"|         ");
+                                    }
+
+                                    break;
+                                }
+
+                            case 2:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write($"{koszt_Ruchu[count - col + jj].Node_South[2]}         ");
+                                    }
+
+                                    break;
+                                }
+
+                            case 3:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write($"|         ");
+                                    }
+
+                                    break;
+                                }
+
+                            case 4:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write($"|         ");
+                                    }
+
+                                    break;
+                                }
+                        }
+                        Console.WriteLine();
+                    }
+                }
+
+            }
+        }//write out
+
+
         /// <summary>
         /// metoda ma zwracac liste klas Check node. Jesli to możliwe w wszytkich kierunkach
         /// </summary>
