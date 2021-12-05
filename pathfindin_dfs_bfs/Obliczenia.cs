@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace pathfindin_dfs_bfs
 {
-    public class Obliczenia
+    public class Obliczenia : Szukanie_DFS
     {
         public static List<Check_node> checked_node = new List<Check_node>();
         public static List<Koszt_Ruchu> koszt_Ruchu = new();
         public static bool search_end;
-        //private static bool w_gore;
-        private static bool wypisane;
-        private static bool iamstuck;
 
         public static int Give_Random_Number(int x, int y)
         {
@@ -177,6 +174,15 @@ namespace pathfindin_dfs_bfs
             return grid;
         }// Enter_value_to_grid
 
+
+        /// <summary>
+        /// wyswietlenie tablicy. Pamietaj o zakonczeniu skrytpu o ustaweniu search_end na false
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <param name="start_node"></param>
+        /// <param name="end_node"></param>
         public static void write_out(int[,] grid, int row, int col, int[] start_node, int[] end_node)
         {
             for (int i = 0; i < row; i++)
@@ -261,6 +267,210 @@ namespace pathfindin_dfs_bfs
             }
         }//write out
 
+
+        /// <summary>
+        /// wyswietlenie tablicy. Pamietaj o zakonczeniu skrytpu o ustaweniu search_end na false
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <param name="start_node"></param>
+        /// <param name="end_node"></param>
+        public static void write_out_koszt(int[,] grid, int row, int col, int[] start_node, int[] end_node)
+        {
+            int count = 0;
+            for (int i = 0; i < row; i++)
+            {
+                int kolumna_z_petli = 0;
+                for (int j = 0; j < col; j++)
+                {
+
+                    if (i == start_node[0] && j == start_node[1])
+                    {
+                        grid[i, j] = 1;
+                    }
+                    if (i == end_node[0] && j == end_node[1])
+                    {
+                        grid[i, j] = 4;
+                    }
+
+                    if (grid[i, j] == 6)
+                    {
+
+                    }
+
+                    else if (Program.visted_node[i, j] == true && i == end_node[0] && j == end_node[1])
+                    {
+                        grid[i, j] = 5;
+                        search_end = true;
+                    }
+                    else if (Program.arrival_node[i, j] && grid[i, j] != 1)
+                    {
+                        grid[i, j] = 3;
+
+                    }
+                    else if (Program.visted_node[i, j] == true && grid[i, j] != 1 && grid[i, j] != 3 && !Program.arrival_node[i, j])
+                    {
+                        grid[i, j] = 2;
+                    }
+
+                    if (j != col-1)
+                    {
+                        #region COLOR
+                        switch (grid[i, j])
+                        {
+                            case 6:
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 2:
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 5:
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 3:
+                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 4:
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 1:
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            default:
+                                //Console.Write(grid[i, j]);
+                                break;
+                        }
+                        #endregion
+                        Console.Write($"{grid[i, j]} ");
+                        Console.ResetColor();
+                        Console.Write($"<--{koszt_Ruchu[count].Node_East[2]}--> ");
+                    }
+                    
+                    if (j == col -1)
+                    {
+                        #region COLOR
+                        switch (grid[i, j])
+                        {
+                            case 6:
+                                Console.ForegroundColor = ConsoleColor.Cyan;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 2:
+                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 5:
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 3:
+                                Console.ForegroundColor = ConsoleColor.Magenta;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 4:
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            case 1:
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                //Console.Write(grid[i, j]);
+                                //Console.ResetColor();
+                                break;
+                            default:
+                                //Console.Write(grid[i, j]);
+                                break;
+                        }
+                        #endregion
+                        Console.Write($"{grid[i, j]} ");
+                        Console.ResetColor();
+                    }
+                    count++;
+                    kolumna_z_petli = j;
+
+                }
+                Console.WriteLine();
+                if (i != row - 1)
+                {
+                    for (int ii = 0; ii < 5; ii++)
+                    {
+                        switch (ii)
+                        {
+                            case 0:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write("|         ");
+                                    }
+
+                                    break;
+                                }
+
+                            case 1:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write($"|         ");
+                                    }
+
+                                    break;
+                                }
+
+                            case 2:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write($"{koszt_Ruchu[count - col + jj].Node_South[2]}         ");
+                                    }
+
+                                    break;
+                                }
+
+                            case 3:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write($"|         ");
+                                    }
+
+                                    break;
+                                }
+
+                            case 4:
+                                {
+                                    for (int jj = 0; jj < col; jj++)
+                                    {
+                                        Console.Write($"|         ");
+                                    }
+
+                                    break;
+                                }
+                        }
+                        Console.WriteLine();
+                    }
+                }
+
+            }
+        }//write out
+
+
         /// <summary>
         /// metoda ma zwracac liste klas Check node. Jesli to możliwe w wszytkich kierunkach
         /// </summary>
@@ -281,7 +491,7 @@ namespace pathfindin_dfs_bfs
             if (i < row-1) // dół
             {
                 checked_node.Add(new Check_node { Row = i+1, Col = j, Visted_node = true, Direction = Helper_driectrion.DOWN });
-                Console.WriteLine();
+                //Console.WriteLine();
             }
             if (i > 0) // góra
             {
@@ -299,363 +509,71 @@ namespace pathfindin_dfs_bfs
             return checked_node;
         }// check_node
 
-        public static void DFS(int[,] grid, int row, int col,
-             int[] start_node, int[] end_node)
+        public static void Wypisz_Najkrotsza_droge(int[,] grid, int[] start_node, Check_node node)
         {
-            List<Check_node> list_cheked_node;
-            list_cheked_node = check_node(row, col, start_node);
-            int[] pos = new int[] { start_node[0], start_node[1] };
-            while (!search_end && !wypisane)
+            #region wypisz sciezke
+            int uwu = 0;
+
+
+            for (int i = 0; i <= Math.Abs(start_node[0] - node.Row); i++)
             {
-
-                // w góre
-                if (pos[0] > 0 && grid[pos[0] - 1, pos[1]] != 3 && grid[pos[0] - 1, pos[1]] != 1)
+                for (int ii = 0; ii <= Math.Abs(start_node[1] - node.Col); ii++)
                 {
-                    if (Program.visted_node[pos[0] - 1, pos[1]])
+                    if (start_node[1] - node.Col > 0)
                     {
-                        pos[0]--;
-                        list_cheked_node = check_node(row, col, pos);
-                        Program.arrival_node[pos[0], pos[1]] = true;
+                        grid[node.Row, node.Col + ii] = 6;
                     }
-                }
-                // w lewo
-                else if (pos[1] > 0 && grid[pos[0], pos[1] - 1] != 3 && grid[pos[0], pos[1] - 1] != 1)
-                {
-                    if (Program.visted_node[pos[0], pos[1] - 1])
+                    else if (start_node[1] - node.Col < 0)
                     {
-                        pos[1]--;
-                        list_cheked_node = check_node(row, col, pos);
-                        Program.arrival_node[pos[0], pos[1]] = true;
+                        grid[node.Row, node.Col - ii] = 6;
                     }
-                }
-                // w dół 
-                else if (pos[0] < row-1 && grid[pos[0] + 1, pos[1]] != 3 && grid[pos[0] + 1, pos[1]] != 1)
-                {
-                    if (Program.visted_node[pos[0] + 1, pos[1]] )
+                    else if (start_node[1] - node.Col == 0)
                     {
-                        pos[0]++;
-                        list_cheked_node = check_node(row, col, pos);
-                        Program.arrival_node[pos[0], pos[1]] = true;
-                        
+                        grid[node.Row, node.Col] = 6;
                     }
-                }
-                // w prawo
-                else if (pos[1] < col-1 && grid[pos[0], pos[1] + 1] != 3 && grid[pos[0], pos[1] + 1] != 1)
-                {
-                    if (Program.visted_node[pos[0], pos[1]+ 1] )
-                    {
-                        pos[1]++;
-                        list_cheked_node = check_node(row, col, pos);
-                        Program.arrival_node[pos[0], pos[1]] = true;
-                        
-                    }
-                }
-                else if (iamstuck)
-                {
-                    foreach (var item in list_cheked_node)
-                    {
-                        if (Program.visted_node[item.Row, item.Col] == true && grid[item.Row,item.Col] != 3 && grid[item.Row, item.Col] != 1)
-                        {
-                            pos[0] = item.Row;
-                            pos[1] = item.Col;
-                            iamstuck = false;
-                            list_cheked_node = check_node(row, col, pos);
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    iamstuck = true;
+                    uwu = ii;
                 }
 
-                
-                foreach (var node in list_cheked_node)
+                if (start_node[1] - node.Col > 0)
                 {
-                    //sprawdz czy node przeszukany jest zgodny z nodem docelowym
-                    if (node.Row == end_node[0] && node.Col == end_node[1]) // powinno być grid[node.Row, node.Col] == 4 // ale w/e
+                    if (start_node[0] - node.Row > 0)
                     {
-                        Console.WriteLine(node.Row + "," + node.Col + " Cel jest w tej pozycji ");
-
-                        //Console.WriteLine("Row " + (start_node[0] - node.Row));
-                        //Console.WriteLine("Col " + (start_node[1] - node.Col));
-                        Console.WriteLine($"Suma ruchów {Math.Abs(start_node[1] - node.Col) + Math.Abs(start_node[0] - node.Row)}");
-
-                        int uwu = 0;
-
-                        #region wypisz sciezke
-                        for (int i = 0; i <= Math.Abs(start_node[0] - node.Row); i++)
-                        {
-                            for (int ii = 0; ii <= Math.Abs(start_node[1] - node.Col); ii++)
-                            {
-                                if (start_node[1] - node.Col > 0)
-                                {
-                                    grid[node.Row, node.Col + ii] = 6;
-                                }
-                                else if (start_node[1] - node.Col < 0)
-                                {
-                                    grid[node.Row, node.Col - ii] = 6;
-                                }
-                                else if (start_node[1] - node.Col == 0)
-                                {
-                                    grid[node.Row, node.Col] = 6;
-                                }
-                                uwu = ii;
-                            }
-
-                            if (start_node[1] - node.Col > 0)
-                            {
-                                if (start_node[0] - node.Row > 0)
-                                {
-                                    grid[node.Row + i, node.Col + uwu] = 6;
-                                }
-                                else if (start_node[0] - node.Row < 0)
-                                {
-                                    grid[node.Row - i, node.Col + uwu] = 6;
-                                }
-                                else if (start_node[0] - node.Col == 0)
-                                {
-                                    grid[node.Row, node.Col] = 6;
-                                }
-                            }
-                            else if (start_node[1] - node.Col < 0)
-                            {
-                                if (start_node[0] - node.Row > 0)
-                                {
-                                    grid[node.Row + i, node.Col - uwu] = 6;
-                                }
-                                else if (start_node[0] - node.Row < 0)
-                                {
-                                    grid[node.Row - i, node.Col - uwu] = 6;
-                                }
-                                else if (start_node[0] - node.Col == 0)
-                                {
-                                    grid[node.Row, node.Col] = 6;
-                                }
-
-                            }
-                            else if (start_node[0] - node.Col == 0)
-                            {
-                                grid[node.Row, node.Col] = 6;
-                            }
-                        }
-
-                        wypisane = true;
-                        #endregion
-
-
-                        foreach (var item in koszt_Ruchu)
-                        {
-
-                            List<string> wypisz_kierunki = item.Daj_Liste_Z_Kosztami();
-                            foreach (var kierunek in wypisz_kierunki)
-                            {
-                                Console.WriteLine(kierunek);
-                            }
-                            Console.WriteLine("============================");
-                        }
+                        grid[node.Row + i, node.Col + uwu] = 6;
                     }
-                    else 
+                    else if (start_node[0] - node.Row < 0)
                     {
-                        //Console.WriteLine(node.Row + "," + node.Col + " Cel? " + node.Direction); // debug
+                        grid[node.Row - i, node.Col + uwu] = 6;
                     }
-
-                    if (grid[node.Row, node.Col] != 3)
+                    else if (start_node[0] - node.Col == 0)
                     {
-                        Program.visted_node[node.Row, node.Col] = node.Visted_node;
-                    }
-
-                                       
-                }
-
-                Console.WriteLine();
-                write_out(grid, row, col, start_node, end_node);
-                Thread.Sleep(500);
-            }// while
-            
-        }//dfs
-
-
-
-
-        public static void BFS(int[,] grid, int row, int col,
-            int[] start_node, int[] end_node)
-        {
-            List<Check_node> list_cheked_node;
-            list_cheked_node = check_node(row, col, start_node);
-            int[] pos = new int[] { start_node[0], start_node[1] };
-            while (!search_end && !wypisane)
-            {
-                // w prawo
-                 if (pos[1] < col-1 && grid[pos[0], pos[1] + 1] != 3 && grid[pos[0], pos[1] + 1] != 1)
-                {
-                    if (Program.visted_node[pos[0], pos[1] + 1])
-                    {
-                        pos[1]++;
-                        list_cheked_node = check_node(row, col, pos);
-                        Program.arrival_node[pos[0], pos[1]] = true;
-
+                        grid[node.Row, node.Col] = 6;
                     }
                 }
-                 // w lewo
-                else if (pos[1] > 0 && grid[pos[0], pos[1] - 1] != 3 && grid[pos[0], pos[1] - 1] != 1)
+                else if (start_node[1] - node.Col < 0)
                 {
-                    if (Program.visted_node[pos[0], pos[1] - 1])
+                    if (start_node[0] - node.Row > 0)
                     {
-                        pos[1]--;
-                        list_cheked_node = check_node(row, col, pos);
-                        Program.arrival_node[pos[0], pos[1]] = true;
+                        grid[node.Row + i, node.Col - uwu] = 6;
                     }
-                }
-
-                // w góre
-                else if (pos[0] > 0 && grid[pos[0] - 1, pos[1]] != 3 && grid[pos[0] - 1, pos[1]] != 1)
-                {
-                    if (Program.visted_node[pos[0] - 1, pos[1]])
+                    else if (start_node[0] - node.Row < 0)
                     {
-                        pos[0]--;
-                        list_cheked_node = check_node(row, col, pos);
-                        Program.arrival_node[pos[0], pos[1]] = true;
+                        grid[node.Row - i, node.Col - uwu] = 6;
                     }
-                } 
-               
-
-                
-                // w dół 
-                else if (pos[0] < row - 1 && grid[pos[0] + 1, pos[1]] != 3 && grid[pos[0] + 1, pos[1]] != 1)
-                {
-                    if (Program.visted_node[pos[0] + 1, pos[1]])
+                    else if (start_node[0] - node.Col == 0)
                     {
-                        pos[0]++;
-                        list_cheked_node = check_node(row, col, pos);
-                        Program.arrival_node[pos[0], pos[1]] = true;
-
+                        grid[node.Row, node.Col] = 6;
                     }
-                }
-                
-                else if (iamstuck)
-                {
-                    foreach (var item in list_cheked_node)
-                    {
-                        if (Program.visted_node[item.Row, item.Col] == true && grid[item.Row, item.Col] != 3 && grid[item.Row, item.Col] != 1)
-                        {
-                            pos[0] = item.Row;
-                            pos[1] = item.Col;
-                            iamstuck = false;
-                            list_cheked_node = check_node(row, col, pos);
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    iamstuck = true;
-                }
-
-
-                foreach (var node in list_cheked_node)
-                {
-                    //sprawdz czy node przeszukany jest zgodny z nodem docelowym
-                    if (node.Row == end_node[0] && node.Col == end_node[1]) // powinno być grid[node.Row, node.Col] == 4 // ale w/e
-                    {
-                        Console.WriteLine(node.Row + "," + node.Col + " Cel jest w tej pozycji ");
-
-                        //Console.WriteLine("Row " + (start_node[0] - node.Row));
-                        //Console.WriteLine("Col " + (start_node[1] - node.Col));
-                        Console.WriteLine($"Suma ruchów {Math.Abs(start_node[1] - node.Col) + Math.Abs(start_node[0] - node.Row)}");
-
-                        int uwu = 0;
-
-                        #region wypisz sciezke
-                        for (int i = 0; i <= Math.Abs(start_node[0] - node.Row); i++)
-                        {
-                            for (int ii = 0; ii <= Math.Abs(start_node[1] - node.Col); ii++)
-                            {
-                                if (start_node[1] - node.Col > 0)
-                                {
-                                    grid[node.Row, node.Col + ii] = 6;
-                                }
-                                else if (start_node[1] - node.Col < 0)
-                                {
-                                    grid[node.Row, node.Col - ii] = 6;
-                                }
-                                else if (start_node[1] - node.Col == 0)
-                                {
-                                    grid[node.Row, node.Col] = 6;
-                                }
-                                uwu = ii;
-                            }
-
-                            if (start_node[1] - node.Col > 0)
-                            {
-                                if (start_node[0] - node.Row > 0)
-                                {
-                                    grid[node.Row + i, node.Col + uwu] = 6;
-                                }
-                                else if (start_node[0] - node.Row < 0)
-                                {
-                                    grid[node.Row - i, node.Col + uwu] = 6;
-                                }
-                                else if (start_node[0] - node.Col == 0)
-                                {
-                                    grid[node.Row, node.Col] = 6;
-                                }
-                            }
-                            else if (start_node[1] - node.Col < 0)
-                            {
-                                if (start_node[0] - node.Row > 0)
-                                {
-                                    grid[node.Row + i, node.Col - uwu] = 6;
-                                }
-                                else if (start_node[0] - node.Row < 0)
-                                {
-                                    grid[node.Row - i, node.Col - uwu] = 6;
-                                }
-                                else if (start_node[0] - node.Col == 0)
-                                {
-                                    grid[node.Row, node.Col] = 6;
-                                }
-
-                            }
-                            else if (start_node[0] - node.Col == 0)
-                            {
-                                grid[node.Row, node.Col] = 6;
-                            }
-                        }
-
-                        wypisane = true;
-                        #endregion
-
-
-                        foreach (var item in koszt_Ruchu)
-                        {
-
-                            List<string> wypisz_kierunki = item.Daj_Liste_Z_Kosztami();
-                            foreach (var kierunek in wypisz_kierunki)
-                            {
-                                Console.WriteLine(kierunek);
-                            }
-                            Console.WriteLine("============================");
-                        }
-                    }
-                    else
-                    {
-                        //Console.WriteLine(node.Row + "," + node.Col + " Cel? " + node.Direction); // debug
-                    }
-
-                    if (grid[node.Row, node.Col] != 3)
-                    {
-                        Program.visted_node[node.Row, node.Col] = node.Visted_node;
-                    }
-
 
                 }
+                else if (start_node[0] - node.Col == 0)
+                {
+                    grid[node.Row, node.Col] = 6;
+                }
+            }
+            #endregion
+        }
 
-                Console.WriteLine();
-                write_out(grid, row, col, start_node, end_node);
-                Thread.Sleep(500);
-            }// while
+        
 
-        }//dfs
     }//class
 }

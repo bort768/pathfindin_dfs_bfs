@@ -8,8 +8,8 @@ namespace pathfindin_dfs_bfs
     class Program
     {
         //rzedy i kolmny generowane losowo
-        static int row = Obliczenia.Give_Random_Number(6, 9);
-        static int col = Obliczenia.Give_Random_Number(6, 9);
+        static int row = Obliczenia.Give_Random_Number(3, 6);
+        static int col = Obliczenia.Give_Random_Number(3, 6);
         public static bool[,] visted_node = Obliczenia.Enter_false_visted(row, col);
         public static bool[,] arrival_node = Obliczenia.Enter_false_visted(row, col);
 
@@ -34,13 +34,16 @@ namespace pathfindin_dfs_bfs
                 end_node = new int[] { Obliczenia.Give_Random_Number(0, row), Obliczenia.Give_Random_Number(0, col) };
                 //Console.WriteLine("WEW"); 
             }
-            while (start_node == end_node);
+            while (start_node[0] == end_node[0] && start_node[1] == end_node[1]);
 
             Obliczenia.write_out(grid, row, col, start_node, end_node);
 
-            //Obliczenia.DFS(grid, row, col, start_node, end_node);
-            Obliczenia.BFS(grid, row, col, start_node, end_node);
 
+
+            int[,] grid_bfs = grid;
+            Szukanie_DFS.DFS(grid, row, col, start_node, end_node);
+            BFS.BFS_M(grid_bfs, row, col, start_node, end_node);
+            //Iteration_Search.IS(grid_bfs, row, col, start_node, end_node);
 
 
         }
