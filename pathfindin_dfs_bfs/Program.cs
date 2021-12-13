@@ -36,15 +36,9 @@ namespace pathfindin_dfs_bfs
             }
             while (start_node[0] == end_node[0] && start_node[1] == end_node[1]);
 
-            Obliczenia.write_out(grid, row, col, start_node, end_node);
+            //Obliczenia.write_out(grid, row, col, start_node, end_node);
 
-
-
-            int[,] grid_bfs = grid;
-            Szukanie_DFS.DFS(grid, row, col, start_node, end_node);
-            BFS.BFS_M(grid_bfs, row, col, start_node, end_node);
-            //Iteration_Search.IS(grid_bfs, row, col, start_node, end_node);
-
+            Menu_UI.Wyswietl_Menu(grid, row, col, start_node, end_node);
 
         }
     }
