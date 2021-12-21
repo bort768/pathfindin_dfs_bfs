@@ -12,6 +12,7 @@ namespace pathfindin_dfs_bfs
         public int Col { get; set; }
         public bool Visted_node { get; set; }
         public string Direction { get; set; }
+        public int Koszt { get; set; }
 
 
     }

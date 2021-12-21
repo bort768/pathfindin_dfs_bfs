@@ -16,6 +16,7 @@ namespace pathfindin_dfs_bfs
             List<Check_node> list_cheked_node;
             list_cheked_node = Obliczenia.check_node(row, col, start_node);
             int[] pos = new int[] { start_node[0], start_node[1] };
+            int koszt_operacji = 0;
             while (!Obliczenia.search_end && !wypisane)
             {
 
@@ -27,6 +28,7 @@ namespace pathfindin_dfs_bfs
                         pos[0]--;
                         list_cheked_node = Obliczenia.check_node(row, col, pos);
                         Program.arrival_node[pos[0], pos[1]] = true;
+                        koszt_operacji++;
                     }
                 }
                 // w lewo
@@ -37,6 +39,7 @@ namespace pathfindin_dfs_bfs
                         pos[1]--;
                         list_cheked_node = Obliczenia.check_node(row, col, pos);
                         Program.arrival_node[pos[0], pos[1]] = true;
+                        koszt_operacji++;
                     }
                 }
                 // w dół 
@@ -47,7 +50,7 @@ namespace pathfindin_dfs_bfs
                         pos[0]++;
                         list_cheked_node = Obliczenia.check_node(row, col, pos);
                         Program.arrival_node[pos[0], pos[1]] = true;
-
+                        koszt_operacji++;
                     }
                 }
                 // w prawo
@@ -58,7 +61,7 @@ namespace pathfindin_dfs_bfs
                         pos[1]++;
                         list_cheked_node = Obliczenia.check_node(row, col, pos);
                         Program.arrival_node[pos[0], pos[1]] = true;
-
+                        koszt_operacji++;
                     }
                 }
                 else if (iamstuck)
@@ -91,8 +94,8 @@ namespace pathfindin_dfs_bfs
                         //Console.WriteLine("Row " + (start_node[0] - node.Row));
                         //Console.WriteLine("Col " + (start_node[1] - node.Col));
                         Console.WriteLine($"Suma ruchów {Math.Abs(start_node[1] - node.Col) + Math.Abs(start_node[0] - node.Row)}");
-
-                        Obliczenia.Wypisz_Najkrotsza_droge(grid, start_node, node);
+                        koszt_operacji++;
+                        grid = Obliczenia.Wypisz_Najkrotsza_droge(grid, start_node, node);
                         wypisane = true;
                         /*
                         foreach (var item in Obliczenia.koszt_Ruchu)
@@ -121,7 +124,8 @@ namespace pathfindin_dfs_bfs
                 }
 
                 Console.WriteLine();
-                Obliczenia.write_out_koszt(grid, row, col, start_node, end_node);
+                Console.WriteLine($"Koszt operacji wynosi: {koszt_operacji}");
+                Obliczenia.write_out(grid, row, col, start_node, end_node);
                 Thread.Sleep(500);
             }// while
 

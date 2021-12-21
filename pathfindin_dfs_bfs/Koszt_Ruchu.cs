@@ -54,5 +54,46 @@ namespace pathfindin_dfs_bfs
             //return base.ToString(); 
         }
 
+        public List<Node_koszt> Daj_Liste_Z_node(int[,] grid)
+        {
+            List<Node_koszt> lista_do_wyplucia = new();
+            //Console.WriteLine("Node row " + Node_1[0] + " col: " + Node_1[1]);
+            if (Node_North != null)
+            {
+                //Console.WriteLine("North row " + Node_North[0] + " col: " + Node_North[1]);
+                if (grid[Node_North[0], Node_North[1]] != 3 && grid[Node_North[0], Node_North[1]] != 3)
+                {
+                    lista_do_wyplucia.Add(new Node_koszt {Row = Node_North[0], Col = Node_North[1], Koszt = Node_North[2], Kierunek = Helper_driectrion.UP });
+                }              
+            }
+            if (Node_East != null)
+            {
+                //Console.WriteLine("East row "+Node_East[0] +" col: "+ Node_East[1]);
+                if (grid[Node_East[0], Node_East[1]] != 3 && grid[Node_East[0], Node_East[1]] != 1)
+                {
+                    lista_do_wyplucia.Add(new Node_koszt { Row = Node_East[0], Col = Node_East[1], Koszt = Node_East[2], Kierunek = Helper_driectrion.RIGHT });
+                }
+            }
+            if (Node_South != null)
+            {
+                //Console.WriteLine("South row " + Node_South[0] + " col: " + Node_South[1]);
+                if (grid[Node_South[0], Node_South[1]] != 3 && grid[Node_South[0], Node_South[1]] != 1)
+                {
+                    lista_do_wyplucia.Add(new Node_koszt { Row = Node_South[0], Col = Node_South[1], Koszt = Node_South[2], Kierunek = Helper_driectrion.DOWN });
+                }               
+            }
+            if (Node_West != null)
+            {
+                //Console.WriteLine("West row " + Node_West[0] + " col: " + Node_West[1]);
+                if (grid[Node_West[0], Node_West[1]] != 3 && grid[Node_West[0], Node_West[1]] != 1)
+                {
+                    lista_do_wyplucia.Add(new Node_koszt { Row = Node_West[0], Col = Node_West[1], Koszt = Node_West[2], Kierunek = Helper_driectrion.LEFT });
+                }             
+            }
+            return lista_do_wyplucia;
+
+            //return base.ToString(); 
+        }
+
     }
 }
