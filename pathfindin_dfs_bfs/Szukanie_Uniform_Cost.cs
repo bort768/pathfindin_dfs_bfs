@@ -30,6 +30,8 @@ namespace pathfindin_dfs_bfs
             while (check_Nodes.Count > 0 || !wypisane)
             {
 
+
+                //koszt operacji w punkcjie starowym zawsze bedzie najmniejszy, ponieważ kosztu nie ma 
                 var min_node = check_Nodes.Min(r => r.Koszt);
                 var uwu = check_Nodes.Where(r => r.Koszt == min_node);
 
@@ -70,15 +72,20 @@ namespace pathfindin_dfs_bfs
                                     }
                                     
                                 }
-                                check_Nodes.RemoveAt(0);
+                                var node_del = check_Nodes.Where(r => r.Koszt > min_kosszt_2);
+                                foreach (var Node_delete in node_del.ToList())
+                                {
+                                    check_Nodes.Remove(Node_delete);
+                                }
+                                
                                 node_Koszt_2.Clear();
-                               break; 
+                               
                             }
-                            
+                            break; 
                         }
 
                         //else if (a_node.Koszt == min && check_Nodes[0].Koszt <= koszt_operacji)
-                        else if (a_node.Koszt == min && check_Nodes.Min(r => r.Koszt) <= koszt_operacji)
+                        else if (a_node.Koszt == min && check_Nodes.Min(r => r.Koszt) < koszt_operacji)
                         {
                            koszt_operacji += a_node.Koszt;
                            pos[0] = a_node.Row;
@@ -111,16 +118,42 @@ namespace pathfindin_dfs_bfs
                            break;
                         }
 
-                        else if (a_node.Koszt == min)
+                        else if (a_node.Koszt == min )
                         {
-                            koszt_operacji += a_node.Koszt;
-                            pos[0] = a_node.Row;
-                            pos[1] = a_node.Col;
-                            check_Nodes.Add(new Check_node { Row = a_node.Row, Col = a_node.Col, Koszt = koszt_operacji });
-                            list_cheked_node = Obliczenia.check_node(row, col, pos);
-                            Program.arrival_node[pos[0], pos[1]] = true;
-                            node_Koszt.RemoveAt(0);
+                            bool only_to_if = false;
+                            var where_is_lowest_value = check_Nodes.Where((r) => r.Koszt < a_node.Koszt);
+                            foreach (var lowest_value_node in where_is_lowest_value)
+                            {
+                                koszt_operacji += a_node.Koszt;
+                                pos[0] = a_node.Row;
+                                pos[1] = a_node.Col;
+                                check_Nodes.Add(new Check_node { Row = a_node.Row, Col = a_node.Col, Koszt = koszt_operacji });
+                                list_cheked_node = Obliczenia.check_node(row, col, pos);
+                                Program.arrival_node[pos[0], pos[1]] = true;
+                                only_to_if = true;
+                                break;
+                            }
+                            if (!only_to_if && check_Nodes.Min(r => r.Koszt) <= koszt_operacji)
+                            {
+                                koszt_operacji += a_node.Koszt;
+                                pos[0] = a_node.Row;
+                                pos[1] = a_node.Col;
+                                check_Nodes.Add(new Check_node { Row = a_node.Row, Col = a_node.Col, Koszt = koszt_operacji });
+                                list_cheked_node = Obliczenia.check_node(row, col, pos);
+                                Program.arrival_node[pos[0], pos[1]] = true;
+                            }
+
                             //check_Nodes.RemoveAt(0);
+                            if (node_Koszt.Count > 1)
+                            {
+                                node_Koszt.Clear();
+                            }
+                            else
+                            {
+                                check_Nodes.RemoveAt(0);
+                            }
+                            
+                            
                             break;
                         }
 
@@ -174,7 +207,12 @@ namespace pathfindin_dfs_bfs
                         }
                         //grid = Obliczenia.Wypisz_Najkrotsza_droge(grid, start_node, node);
                         wypisane = true;
-
+                        if (check_Nodes_goal.Count > 0)
+                        {
+                            var lowest_value = check_Nodes_goal.Min(r => r.Koszt);
+                            Console.WriteLine($"Koszt operacji wynosi: {lowest_value}");
+                        }
+                        
                     }
                     else
                     {
@@ -188,9 +226,11 @@ namespace pathfindin_dfs_bfs
 
 
                 }
-
+                
+                //var lowest_value_where = check_Nodes_goal.Where(r => r.Koszt == lowest_value);
                 Console.WriteLine();
                 Console.WriteLine($"Koszt operacji wynosi: {koszt_operacji}");
+                
                 Obliczenia.write_out_koszt(grid, row, col, start_node, end_node);
                 Thread.Sleep(500);
             }// while

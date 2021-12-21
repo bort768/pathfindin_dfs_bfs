@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31613.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32002.185
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pathfindin_dfs_bfs", "pathfindin_dfs_bfs\pathfindin_dfs_bfs.csproj", "{93F69F19-053F-4213-9E0B-FC4D049B8738}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pathfindin_dfs_bfs", "pathfindin_dfs_bfs\pathfindin_dfs_bfs.csproj", "{93F69F19-053F-4213-9E0B-FC4D049B8738}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject_Learning", "TestProject_Learning\TestProject_Learning.csproj", "{BA9D3041-2C42-46F6-883C-B9DD3C0181F4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{93F69F19-053F-4213-9E0B-FC4D049B8738} = {93F69F19-053F-4213-9E0B-FC4D049B8738}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{93F69F19-053F-4213-9E0B-FC4D049B8738}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93F69F19-053F-4213-9E0B-FC4D049B8738}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93F69F19-053F-4213-9E0B-FC4D049B8738}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9D3041-2C42-46F6-883C-B9DD3C0181F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9D3041-2C42-46F6-883C-B9DD3C0181F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9D3041-2C42-46F6-883C-B9DD3C0181F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9D3041-2C42-46F6-883C-B9DD3C0181F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

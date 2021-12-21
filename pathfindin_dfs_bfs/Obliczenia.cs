@@ -48,40 +48,48 @@ namespace pathfindin_dfs_bfs
         {
             int[,] grid = new int[row, col];
 
-            #region koszt ruchu
+            for (int i = 0; i < row; i++)
+            {     
+                for (int j = 0; j < col; j++)
+                {
+                    grid[i, j] = 0;                  
+                }
+            }
+                       
+            return grid;
+        }// Enter_value_to_grid
 
-            
-            int count = 0;
-            
+        public static void Make_Cost_Node(int row, int col)
+        {   
             for (int i = 0; i < row; i++)
             {
                 koszt_Ruchu.Add(new List<Koszt_Ruchu>());
                 for (int j = 0; j < col; j++)
                 {
-                    grid[i, j] = 0;
-
                     #region koszt ruchu
                     //dla node w punkcie zerowym
                     if (i == 0 && j == 0)
                     {
                         koszt_Ruchu[i].Add(item: new Koszt_Ruchu
-                        { Node_1 = new int[] { i, j },
+                        {
+                            Node_1 = new int[] { i, j },
                             Node_East = new int[] { i, j + 1, Give_Koszt_Ruchu() },
-                            Node_South = new int[] { i + 1, j, Give_Koszt_Ruchu() } });
+                            Node_South = new int[] { i + 1, j, Give_Koszt_Ruchu() }
+                        });
                     }
                     // dla rzedow w kolumnie 0
-                    else if(j == 0 && i > 0 && i < row - 1)
+                    else if (j == 0 && i > 0 && i < row - 1)
                     {
                         koszt_Ruchu[i].Add(item: new Koszt_Ruchu
                         {
                             Node_1 = new int[] { i, j },
-                            Node_North = new int[] { koszt_Ruchu[i-1][j].Node_1[0], koszt_Ruchu[i-1][j].Node_1[1], koszt_Ruchu[i-1][j].Node_South[2] },
+                            Node_North = new int[] { koszt_Ruchu[i - 1][j].Node_1[0], koszt_Ruchu[i - 1][j].Node_1[1], koszt_Ruchu[i - 1][j].Node_South[2] },
                             Node_East = new int[] { i, j + 1, Give_Koszt_Ruchu() },
                             Node_South = new int[] { i + 1, j, Give_Koszt_Ruchu() }
                         });
                     }
                     // dla col w rzedzie 0
-                    else if(j > 0 && i == 0 && j < col-1)
+                    else if (j > 0 && i == 0 && j < col - 1)
                     {
                         koszt_Ruchu[i].Add(item: new Koszt_Ruchu
                         {
@@ -92,7 +100,7 @@ namespace pathfindin_dfs_bfs
                         });
                     }
                     // dla srodkowych pol
-                    else if(j > 0 && i > 0 && i < row-1 && j < col-1)
+                    else if (j > 0 && i > 0 && i < row - 1 && j < col - 1)
                     {
                         koszt_Ruchu[i].Add(item: new Koszt_Ruchu
                         {
@@ -105,7 +113,7 @@ namespace pathfindin_dfs_bfs
                         });
                     }
                     // dla prawy gorny rog
-                    else if(i == 0 && j == col - 1)
+                    else if (i == 0 && j == col - 1)
                     {
                         koszt_Ruchu[i].Add(item: new Koszt_Ruchu
                         {
@@ -115,8 +123,8 @@ namespace pathfindin_dfs_bfs
 
                         });
                     }
-                     // dla konca kolumny srodkowy przedzial 
-                    else if ( i > 0 && i < row - 1 && j == col - 1)
+                    // dla konca kolumny srodkowy przedzial 
+                    else if (i > 0 && i < row - 1 && j == col - 1)
                     {
                         koszt_Ruchu[i].Add(item: new Koszt_Ruchu
                         {
@@ -128,13 +136,13 @@ namespace pathfindin_dfs_bfs
                         });
                     }
                     //lewy dolny rog
-                    else if(j == 0 && i == row-1)
+                    else if (j == 0 && i == row - 1)
                     {
                         koszt_Ruchu[i].Add(item: new Koszt_Ruchu
                         {
                             Node_1 = new int[] { i, j },
                             Node_North = new int[] { koszt_Ruchu[i - 1][j].Node_1[0], koszt_Ruchu[i - 1][j].Node_1[1], koszt_Ruchu[i - 1][j].Node_South[2] },
-                            Node_East = new int[] { i , j + 1, Give_Koszt_Ruchu() },
+                            Node_East = new int[] { i, j + 1, Give_Koszt_Ruchu() },
                             //Node_West = new int[] { koszt_Ruchu[j - 1].Node_South[0], koszt_Ruchu[j - 1].Node_South[1], koszt_Ruchu[j - 1].Node_South[2] }
 
                         });
@@ -155,7 +163,7 @@ namespace pathfindin_dfs_bfs
                         });
                     }
                     // prawy dolny rog
-                    else if(j == col-1 && i == row - 1)
+                    else if (j == col - 1 && i == row - 1)
                     {
                         //Console.WriteLine("row " + koszt_Ruchu[i - 1][j].Node_1[0] + " col " + koszt_Ruchu[i - 1][j].Node_1[1] + " Kosz to " + koszt_Ruchu[i - 1][j].Node_South[2]);
                         //Console.WriteLine("row " + koszt_Ruchu[i][j - 1].Node_1[0] + " col " + koszt_Ruchu[i][j - 1].Node_1[1] + " Kosz to " + koszt_Ruchu[i][j - 1].Node_East[2]);
@@ -164,24 +172,20 @@ namespace pathfindin_dfs_bfs
                         {
                             Node_1 = new int[] { i, j },
                             Node_North = new int[] { koszt_Ruchu[i - 1][j].Node_1[0], koszt_Ruchu[i - 1][j].Node_1[1], koszt_Ruchu[i - 1][j].Node_South[2] },
-                            
+
                             Node_West = new int[] { koszt_Ruchu[i][j - 1].Node_1[0], koszt_Ruchu[i][j - 1].Node_1[1], koszt_Ruchu[i][j - 1].Node_East[2] }
 
                         });
-                        
+
                     }
-                        
+
+
                     
-                    count++;
                     #endregion
                 }
-
             }
-            
-            #endregion
-            return grid;
-        }// Enter_value_to_grid
-
+        }
+        
         public static int[,] Enter_value_to_grid_Menu(int row, int col)
         {
             int[,] grid = new int[row, col];
